@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ConditionGroup as ConditionGroupType, LogicalOperator, Condition, Field } from '@/types/condition';
 import { Button } from '@/components/ui/button';
@@ -45,7 +44,6 @@ const ConditionGroup = ({
     onUpdate(group.id, { conditions: updatedConditions });
   };
 
-  // Background and border colors based on nesting level
   const getBgColor = () => {
     const colors = ['bg-condition-group', 'bg-white', 'bg-blue-50', 'bg-indigo-50', 'bg-violet-50'];
     return colors[level % colors.length];
@@ -64,20 +62,28 @@ const ConditionGroup = ({
 
   return (
     <Card 
-      className={`${getBgColor()} ${getBorderColor()} relative border rounded-md mb-3 shadow-sm transition-all`}
+      className={`
+        bg-condition-group-dark 
+        border-condition-group-border 
+        rounded-md 
+        mb-3 
+        shadow-sm 
+        transition-all
+        text-condition-group-text
+      `}
     >
-      <div className="flex items-center justify-between p-3 border-b border-gray-200">
+      <div className="flex items-center justify-between p-3 border-b border-condition-group-border">
         <div className="flex items-center gap-2">
           <Button 
             variant="ghost" 
             size="sm" 
-            className="h-7 w-7 p-0" 
+            className="h-7 w-7 p-0 text-condition-group-text hover:bg-gray-700" 
             onClick={() => setCollapsed(!collapsed)}
           >
             {collapsed ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
           </Button>
 
-          <span className="font-medium text-gray-700">
+          <span className="font-medium text-condition-group-text">
             {isRoot ? 'Where' : `${level > 0 ? 'And' : ''} Where`}
           </span>
 
@@ -87,8 +93,30 @@ const ConditionGroup = ({
             onValueChange={handleLogicalOperatorChange} 
             className="ml-2"
           >
-            <ToggleGroupItem value="and" size="sm" className="h-7">AND</ToggleGroupItem>
-            <ToggleGroupItem value="or" size="sm" className="h-7">OR</ToggleGroupItem>
+            <ToggleGroupItem 
+              value="and" 
+              size="sm" 
+              className="
+                h-7 
+                bg-condition-group-operator-bg 
+                text-condition-group-operator-text 
+                hover:bg-opacity-90
+              "
+            >
+              AND
+            </ToggleGroupItem>
+            <ToggleGroupItem 
+              value="or" 
+              size="sm" 
+              className="
+                h-7 
+                bg-condition-group-operator-bg 
+                text-condition-group-operator-text 
+                hover:bg-opacity-90
+              "
+            >
+              OR
+            </ToggleGroupItem>
           </ToggleGroup>
         </div>
 
@@ -109,7 +137,6 @@ const ConditionGroup = ({
       {!collapsed && (
         <CardContent className="p-3">
           <div className="pl-5 border-l-2 border-condition-connector">
-            {/* Render conditions */}
             {group.conditions.map((condition, index) => (
               <div key={condition.id} className="mb-2">
                 <ConditionItem
@@ -122,7 +149,6 @@ const ConditionGroup = ({
               </div>
             ))}
             
-            {/* Render nested groups */}
             {group.groups.map((nestedGroup) => (
               <div key={nestedGroup.id} className="mt-3">
                 <ConditionGroup
@@ -138,7 +164,6 @@ const ConditionGroup = ({
               </div>
             ))}
             
-            {/* Action buttons */}
             <div className="mt-3 flex gap-2">
               <Button 
                 variant="outline" 
