@@ -1,7 +1,8 @@
+
 import React, { useState } from 'react';
 import { ConditionGroup as ConditionGroupType, LogicalOperator, Condition, Field } from '@/types/condition';
 import { Button } from '@/components/ui/button';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { Switch } from '@/components/ui/switch';
 import { Plus, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import ConditionItem from './ConditionItem';
 import { Card, CardContent } from '@/components/ui/card';
@@ -31,10 +32,9 @@ const ConditionGroup = ({
 }: ConditionGroupProps) => {
   const [collapsed, setCollapsed] = useState(false);
 
-  const handleLogicalOperatorChange = (value: string) => {
-    if (value === 'and' || value === 'or') {
-      onUpdate(group.id, { logicalOperator: value as LogicalOperator });
-    }
+  const handleLogicalOperatorChange = (checked: boolean) => {
+    const newOperator = checked ? 'or' : 'and';
+    onUpdate(group.id, { logicalOperator: newOperator as LogicalOperator });
   };
 
   const handleConditionUpdate = (condition: Condition, updatedCondition: Partial<Condition>) => {
@@ -57,7 +57,7 @@ const ConditionGroup = ({
       `}
     >
       <div className="flex items-center justify-between p-3 border-b border-gray-200">
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Button 
             variant="ghost" 
             size="sm" 
@@ -71,47 +71,25 @@ const ConditionGroup = ({
             {isRoot ? 'Where' : `${level > 0 ? 'And' : ''} Where`}
           </span>
 
-          <ToggleGroup 
-            type="single" 
-            value={group.logicalOperator} 
-            onValueChange={handleLogicalOperatorChange} 
-            className="ml-2"
-          >
-            <ToggleGroupItem 
-              value="and" 
-              size="sm" 
-              className={`
-                h-7 
-                ${group.logicalOperator === 'and' 
-                  ? 'bg-blue-500 text-white' 
-                  : 'bg-blue-100 text-blue-700'}
-                hover:bg-opacity-90
-                transition-colors
-                duration-200
-                font-semibold
-                border border-blue-200
-              `}
-            >
+          <div className="flex items-center space-x-3 bg-gray-100 px-3 py-1 rounded-md">
+            <span className={`text-sm font-medium ${group.logicalOperator === 'and' ? 'text-blue-600' : 'text-gray-500'}`}>
               AND
-            </ToggleGroupItem>
-            <ToggleGroupItem 
-              value="or" 
-              size="sm" 
-              className={`
-                h-7 
-                ${group.logicalOperator === 'or' 
-                  ? 'bg-purple-500 text-white' 
-                  : 'bg-purple-100 text-purple-700'}
-                hover:bg-opacity-90
-                transition-colors
-                duration-200
-                font-semibold
-                border border-purple-200
-              `}
-            >
+            </span>
+            
+            <Switch
+              checked={group.logicalOperator === 'or'}
+              onCheckedChange={handleLogicalOperatorChange}
+              className={`${
+                group.logicalOperator === 'or'
+                  ? 'bg-purple-500'
+                  : 'bg-blue-500'
+              }`}
+            />
+            
+            <span className={`text-sm font-medium ${group.logicalOperator === 'or' ? 'text-purple-600' : 'text-gray-500'}`}>
               OR
-            </ToggleGroupItem>
-          </ToggleGroup>
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center gap-2">
