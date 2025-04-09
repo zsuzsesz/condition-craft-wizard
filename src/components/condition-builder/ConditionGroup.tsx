@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ConditionGroup as ConditionGroupType, LogicalOperator, Condition, Field } from '@/types/condition';
 import { Button } from '@/components/ui/button';
@@ -45,46 +44,30 @@ const ConditionGroup = ({
     onUpdate(group.id, { conditions: updatedConditions });
   };
 
-  const getBgColor = () => {
-    const colors = ['bg-condition-group', 'bg-white', 'bg-blue-50', 'bg-indigo-50', 'bg-violet-50'];
-    return colors[level % colors.length];
-  };
-
-  const getBorderColor = () => {
-    const colors = [
-      'border-condition-border', 
-      'border-blue-200', 
-      'border-indigo-200', 
-      'border-violet-200', 
-      'border-purple-200'
-    ];
-    return colors[level % colors.length];
-  };
-
   return (
     <Card 
       className={`
-        bg-condition-group-dark 
-        border-condition-group-border 
+        bg-white 
+        border-gray-200 
         rounded-md 
         mb-3 
         shadow-sm 
         transition-all
-        text-condition-group-text
+        text-gray-800
       `}
     >
-      <div className="flex items-center justify-between p-3 border-b border-condition-group-border">
+      <div className="flex items-center justify-between p-3 border-b border-gray-200">
         <div className="flex items-center gap-2">
           <Button 
             variant="ghost" 
             size="sm" 
-            className="h-7 w-7 p-0 text-condition-group-text hover:bg-gray-700" 
+            className="h-7 w-7 p-0 text-gray-600 hover:bg-gray-100" 
             onClick={() => setCollapsed(!collapsed)}
           >
             {collapsed ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
           </Button>
 
-          <span className="font-medium text-condition-group-text">
+          <span className="font-medium text-gray-700">
             {isRoot ? 'Where' : `${level > 0 ? 'And' : ''} Where`}
           </span>
 
@@ -100,13 +83,13 @@ const ConditionGroup = ({
               className={`
                 h-7 
                 ${group.logicalOperator === 'and' 
-                  ? 'bg-sky-500 text-white' 
-                  : 'bg-sky-100 text-sky-700'}
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-blue-100 text-blue-700'}
                 hover:bg-opacity-90
                 transition-colors
                 duration-200
                 font-semibold
-                border border-sky-200
+                border border-blue-200
               `}
             >
               AND
@@ -147,7 +130,7 @@ const ConditionGroup = ({
 
       {!collapsed && (
         <CardContent className="p-3">
-          <div className="pl-5 border-l-2 border-condition-connector">
+          <div className="pl-5 border-l-2 border-gray-200">
             {group.conditions.map((condition, index) => (
               <div key={condition.id} className="mb-2">
                 <ConditionItem
@@ -202,4 +185,3 @@ const ConditionGroup = ({
 };
 
 export default ConditionGroup;
-
