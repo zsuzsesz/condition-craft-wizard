@@ -1,4 +1,5 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { ConditionGroup as ConditionGroupType, LogicalOperator, Condition, Field } from '@/types/condition';
 import { Button } from '@/components/ui/button';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
@@ -29,7 +30,7 @@ const ConditionGroup = ({
   onRemoveCondition,
   onRemoveGroup,
 }: ConditionGroupProps) => {
-  const [collapsed, setCollapsed] = React.useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   const handleLogicalOperatorChange = (value: string) => {
     if (value === 'and' || value === 'or') {
@@ -96,24 +97,34 @@ const ConditionGroup = ({
             <ToggleGroupItem 
               value="and" 
               size="sm" 
-              className="
+              className={`
                 h-7 
-                bg-condition-group-operator-bg 
-                text-condition-group-operator-text 
+                ${group.logicalOperator === 'and' 
+                  ? 'bg-sky-500 text-white' 
+                  : 'bg-sky-100 text-sky-700'}
                 hover:bg-opacity-90
-              "
+                transition-colors
+                duration-200
+                font-semibold
+                border border-sky-200
+              `}
             >
               AND
             </ToggleGroupItem>
             <ToggleGroupItem 
               value="or" 
               size="sm" 
-              className="
+              className={`
                 h-7 
-                bg-condition-group-operator-bg 
-                text-condition-group-operator-text 
+                ${group.logicalOperator === 'or' 
+                  ? 'bg-purple-500 text-white' 
+                  : 'bg-purple-100 text-purple-700'}
                 hover:bg-opacity-90
-              "
+                transition-colors
+                duration-200
+                font-semibold
+                border border-purple-200
+              `}
             >
               OR
             </ToggleGroupItem>
@@ -191,3 +202,4 @@ const ConditionGroup = ({
 };
 
 export default ConditionGroup;
+
